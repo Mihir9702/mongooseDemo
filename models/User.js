@@ -12,7 +12,8 @@ const Schema = mongoose.Schema({
     },
     likesCoding: {
         type: Boolean,
-        required: true
+        required: true,
+        default: false
     },
     cohort: {
         type: String,

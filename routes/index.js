@@ -3,8 +3,9 @@ var router = express.Router();
 const User = require('../models/User');
 
 // Finding a user
-router.get('/check-user/:username', (req, res) => {
-  User.findOne({ username: req.params.username })
+router.get('/check-user/:id', (req, res) => {
+  console.log(`id ${req.params.id}`)
+  User.findById(req.params.id)
   .then(results => {
     res.render('userpage', { username: results.username, cohort: results.cohort })
   })
@@ -13,13 +14,15 @@ router.get('/check-user/:username', (req, res) => {
 
 // Create a user
 router.post('/create-user', (req, res) => {
+  console.log(req.body);
   User.create({
     username: req.body.username,
     password: req.body.password,
-    likesCoding: req.body.likesCoding,
+    likesCoding: req.body.likesCoding === 'on',
     cohort: req.body.cohort,
   })
   .then(results => {
+    console.log(results);
     res.render('userpage', { username: results.username, cohort: results.cohort })
   })
   .catch(err => console.error(err))
@@ -30,6 +33,10 @@ router.get('/', (req, res) => {
   .then(results => {
     res.render('all-users', { users: results })
   })
+})
+
+router.get('/create-users', (req, res) => {
+  res.render('create-userpage')
 })
 
 
