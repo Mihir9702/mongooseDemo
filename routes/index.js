@@ -4,10 +4,9 @@ const User = require('../models/User');
 
 // Finding a user
 router.get('/check-user/:id', (req, res) => {
-  console.log(`id ${req.params.id}`)
   User.findById(req.params.id)
   .then(results => {
-    res.render('userpage', { username: results.username, cohort: results.cohort })
+    res.render('userpage', { username: results.username, cohort: results.cohort, _id: results._id })
   })
   .catch(err => console.error(err))
 })
@@ -23,7 +22,7 @@ router.post('/create-user', (req, res) => {
   })
   .then(results => {
     console.log(results);
-    res.render('userpage', { username: results.username, cohort: results.cohort })
+    res.render('userpage', { username: results.username, cohort: results.cohort, id: results._id })
   })
   .catch(err => console.error(err))
 })
@@ -35,9 +34,16 @@ router.get('/', (req, res) => {
   })
 })
 
-router.get('/create-users', (req, res) => {
-  res.render('create-userpage')
+router.get('/delete-user/:id', (req, res) => {
+  User.findByIdAndDelete(req.params.id)
+  .then(results => {
+    console.log(results)
+    res.render('index')
+  })
+  .catch(err => console.error(err))
 })
+
+
 
 
 module.exports = router;
